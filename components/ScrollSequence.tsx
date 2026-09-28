@@ -12,11 +12,25 @@ export default function ScrollSequence() {
   const [images, setImages] = useState<HTMLImageElement[]>([])
   const [scrollStarted, setScrollStarted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
 
   const frameCount = 96
 
+  // Check for mobile on mount
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   // Preload images
   useEffect(() => {
+    if (isMobile) {
+      setIsLoading(false)
+      return // Don't preload all 96 frames on mobile
+    }
+
     const loadedImages: HTMLImageElement[] = []
     let loadedCount = 0
 
@@ -32,11 +46,11 @@ export default function ScrollSequence() {
       }
       loadedImages.push(img)
     }
-  }, [])
+  }, [isMobile])
 
   // Canvas drawing function
   const renderFrame = (index: number) => {
-    if (!canvasRef.current || images.length === 0) return
+    if (!canvasRef.current || images.length === 0 || isMobile) return
     const canvas = canvasRef.current
     const ctx = canvas.getContext("2d")
     if (!ctx) return
@@ -63,7 +77,7 @@ export default function ScrollSequence() {
   // Handle canvas sizing on mount and resize
   useEffect(() => {
     const handleResize = () => {
-      if (canvasRef.current) {
+      if (canvasRef.current && !isMobile) {
         canvasRef.current.width = window.innerWidth
         canvasRef.current.height = window.innerHeight
         renderFrame(0) // Render the initial frame whenever resized
@@ -71,13 +85,13 @@ export default function ScrollSequence() {
     }
     
     // Check if images are ready before first draw
-    if (!isLoading) {
+    if (!isLoading && !isMobile) {
       handleResize()
     }
     
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [isLoading, images])
+  }, [isLoading, images, isMobile])
 
   // Framer Motion Scroll Tracking
   const { scrollYProgress } = useScroll({
@@ -89,8 +103,8 @@ export default function ScrollSequence() {
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1])
   
   useMotionValueEvent(frameIndex, "change", (latest) => {
-    // Only render and trigger if we're done loading
-    if (isLoading) return;
+    // Only render and trigger if we're done loading, and not on mobile
+    if (isLoading || isMobile) return;
     
     renderFrame(Math.round(latest))
     
@@ -104,6 +118,36 @@ export default function ScrollSequence() {
       setScrollStarted(false)
     }
   })
+
+  if (isMobile) {
+    return (
+      <div className="relative w-full h-[100svh] bg-black flex flex-col items-center justify-center overflow-hidden">
+        <img 
+          src="/assets/frames/frame_0001.webp" 
+          alt="Hero Background" 
+          className="absolute inset-0 w-full h-full object-cover opacity-60" 
+        />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none z-10" />
+        
+        <div className="relative z-20 flex flex-col items-center text-center px-6 gap-8">
+          <SlotMachine 
+            text="Full-Funnel Visual Storytelling & Growth Agency."
+            tag="h1"
+            className="text-4xl font-bold tracking-tight text-white drop-shadow-xl"
+            startFrom="bottom"
+            staggerFrom="center"
+            transition={{ duration: 0.8, staggerChildren: 0.04 }}
+          />
+          <a 
+            href="#contact"
+            className="bg-primary text-black px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] rounded-full shadow-[0_0_40px_rgba(255,191,0,0.4)] block hover:bg-white transition-colors"
+          >
+            Book Call
+          </a>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div 

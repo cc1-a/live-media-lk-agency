@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import ContactForm from '@/components/ContactForm'
+import { Mail } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Contact Us | Live Media LK',
@@ -21,7 +22,9 @@ export default function ContactPage() {
 
           <div className="space-y-8">
             <div>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-2">Email Us</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
+                <Mail className="w-4 h-4" /> Email Us
+              </h2>
               <a href="mailto:livemedialkdigital@gmail.com" className="text-2xl font-bold hover:text-gray-300 transition-colors">
                 livemedialkdigital@gmail.com
               </a>
