@@ -1,9 +1,10 @@
 import ScrollSequence from '@/components/ScrollSequence'
-
-import TestimonialsSection from '@/components/TestimonialsSection'
 import Link from 'next/link'
 import SlotMachine from '@/components/SlotMachine'
-import PastProjectsAnimation from '@/components/PastProjectsAnimation'
+import dynamic from 'next/dynamic'
+
+const PastProjectsAnimation = dynamic(() => import('@/components/PastProjectsAnimation'))
+const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection'))
 
 export default function Home() {
   return (

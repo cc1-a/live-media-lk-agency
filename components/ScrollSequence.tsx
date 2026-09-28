@@ -37,13 +37,20 @@ export default function ScrollSequence() {
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image()
       img.src = `/assets/frames/frame_${i.toString().padStart(4, '0')}.webp`
-      img.onload = () => {
+      img.decode().then(() => {
         loadedCount++
         if (loadedCount === frameCount) {
           setImages(loadedImages)
           setIsLoading(false)
         }
-      }
+      }).catch(() => {
+        // Fallback if decode fails
+        loadedCount++
+        if (loadedCount === frameCount) {
+          setImages(loadedImages)
+          setIsLoading(false)
+        }
+      })
       loadedImages.push(img)
     }
   }, [isMobile])
@@ -67,10 +74,7 @@ export default function ScrollSequence() {
     const x = (canvas.width - w) / 2
     const y = (canvas.height - h) / 2
 
-    // Fill with black explicitly
-    ctx.fillStyle = "black"
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    // Draw the current frame
+    // Draw the current frame directly
     ctx.drawImage(img, x, y, w, h)
   }
 
@@ -102,11 +106,21 @@ export default function ScrollSequence() {
   // Map scroll progress (0 to 1) to frame index (0 to 95)
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1])
   
+  const rafRef = useRef<number | null>(null)
+  const lastIndexRef = useRef(-1)
+
   useMotionValueEvent(frameIndex, "change", (latest) => {
     // Only render and trigger if we're done loading, and not on mobile
     if (isLoading || isMobile) return;
     
-    renderFrame(Math.round(latest))
+    const nextIndex = Math.round(latest);
+    if (nextIndex === lastIndexRef.current) return;
+    lastIndexRef.current = nextIndex;
+
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      renderFrame(nextIndex);
+    });
     
     // Trigger scroll states and audio on first substantive scroll
     if (latest > 1 && !scrollStarted) {
@@ -186,12 +200,10 @@ export default function ScrollSequence() {
 
             {/* Floating Action Button - Animates from top to bottom on scroll */}
             <motion.a 
-              layout
               href="#contact"
+              animate={{ y: scrollStarted ? "calc(100vh - 8rem)" : "3rem" }}
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
-              className={`absolute right-8 md:right-12 z-50 pointer-events-auto bg-primary text-black px-6 py-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors rounded-full shadow-[0_0_40px_rgba(255,191,0,0.4)] block ${
-                scrollStarted ? "bottom-8 md:bottom-12" : "top-8 md:top-12"
-              }`}
+              className="fixed right-8 md:right-12 top-0 z-50 pointer-events-auto bg-primary text-black px-6 py-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors rounded-full shadow-[0_0_40px_rgba(255,191,0,0.4)] block"
             >
               Book Call
             </motion.a>

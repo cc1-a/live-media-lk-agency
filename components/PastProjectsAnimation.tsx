@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  useLayoutEffect,
+  useEffect,
   useRef,
 } from "react";
 import gsap from "gsap";
@@ -37,7 +37,7 @@ export default function PastProjectsAnimation() {
   const text2Ref = useRef<HTMLParagraphElement | null>(null);
   const descriptionTextRef = useRef<HTMLParagraphElement | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const ctx = gsap.context(() => {
       const imageElements = imagesRef.current.filter(Boolean);
 
@@ -84,9 +84,9 @@ export default function PastProjectsAnimation() {
       }, "<+0.5");
 
       imageElements.forEach((imageElement, index) => {
-        tl.to(
+        tl.set(
           imageElement,
-          { zIndex: index, duration: IMAGE_Z_INDEX_DURATION, ease: INTRO_EASE },
+          { zIndex: index },
           index * IMAGE_Z_INDEX_STAGGER
         );
       });
@@ -151,12 +151,14 @@ export default function PastProjectsAnimation() {
               ref={(element) => {
                 if (element) imagesRef.current[index] = element;
               }}
-              className="absolute top-0 left-0 size-full overflow-hidden rounded-xl opacity-0 shadow-2xl border border-primary/20 block hover:border-primary/60 transition-colors"
+              className="absolute top-0 left-0 size-full overflow-hidden rounded-xl opacity-0 shadow-2xl border border-primary/20 block hover:border-primary/60 transition-colors will-change-transform"
+              style={{ transform: "translateZ(0)" }}
             >
               <img
                 src={project.src}
                 className="h-full w-full object-cover"
                 alt={project.alt}
+                loading="lazy"
               />
             </Link>
           ))}

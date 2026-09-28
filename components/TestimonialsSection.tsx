@@ -81,17 +81,9 @@ const TestimonialsColumn = (props: {
 }) => {
   return (
     <div className={props.className}>
-      <motion.ul
-        animate={{
-          translateY: "-50%",
-        }}
-        transition={{
-          duration: props.duration || 10,
-          repeat: Infinity,
-          ease: "linear",
-          repeatType: "loop",
-        }}
-        className="flex flex-col gap-6 pb-6 bg-transparent transition-colors duration-300 list-none m-0 p-0"
+        <ul
+        style={{ '--marquee-duration': `${props.duration || 10}s` } as React.CSSProperties}
+        className="flex flex-col gap-6 pb-6 bg-transparent transition-colors duration-300 list-none m-0 p-0 animate-marquee"
       >
         {[
           ...new Array(2).fill(0).map((_, index) => (
@@ -107,7 +99,7 @@ const TestimonialsColumn = (props: {
                     boxShadow: "0 25px 50px -12px rgba(255, 191, 0, 0.12), 0 10px 10px -5px rgba(255, 191, 0, 0.04)",
                     transition: { type: "spring", stiffness: 400, damping: 17 }
                   }}
-                  className="p-10 rounded-3xl border border-primary/20 shadow-lg shadow-black/20 max-w-sm w-[350px] bg-black/40 backdrop-blur-md transition-all duration-300 cursor-default select-none group focus:outline-none focus:ring-2 focus:ring-primary/30" 
+                  className="p-10 rounded-3xl border border-primary/20 shadow-lg shadow-black/20 max-w-sm w-[350px] bg-neutral-900 transition-all duration-300 cursor-default select-none group focus:outline-none focus:ring-2 focus:ring-primary/30" 
                 >
                   <blockquote className="m-0 p-0">
                     <p className="text-gray-300 leading-relaxed font-normal m-0 transition-colors duration-300">
@@ -119,6 +111,7 @@ const TestimonialsColumn = (props: {
                         height={40}
                         src={image}
                         alt={`Avatar of ${name}`}
+                        loading="lazy"
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300 ease-in-out"
                       />
                       <div className="flex flex-col">
@@ -136,7 +129,7 @@ const TestimonialsColumn = (props: {
             </React.Fragment>
           )),
         ]}
-      </motion.ul>
+      </ul>
     </div>
   );
 };

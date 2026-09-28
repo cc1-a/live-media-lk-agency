@@ -1,5 +1,16 @@
 @import "tailwindcss";
-@config "../tailwind.config.ts";
+
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-primary: #FFBF00;
+  --color-background: #000000;
+  
+  --animate-marquee: marquee var(--marquee-duration, 15s) linear infinite;
+  @keyframes marquee {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+}
 
 @layer base {
   body {
