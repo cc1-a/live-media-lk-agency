@@ -1,0 +1,59 @@
+/* mobile.css */
+
+/* Target only mobile screens */
+@media screen and (max-width: 768px) {
+  
+  /* Hide the interactive desktop background on mobile */
+  .desktop-bg {
+    display: none !important;
+  }
+  
+  /* Change the body background to a clean, slightly lighter dark shade instead of pitch black,
+     making it feel more intentional for mobile reading */
+  body {
+    background-color: #111111 !important;
+    background-image: linear-gradient(180deg, #111111 0%, #000000 100%) !important;
+  }
+  
+  /* Give main content containers better breathing room on small screens */
+  main {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  /* Adjust the hero section / ScrollSequence for mobile if necessary */
+  .hero-container {
+    min-height: 80vh !important;
+  }
+
+  /* Improve typography scaling for mobile */
+  h1, h2, h3 {
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
+  }
+  
+  /* Make buttons stretch fully for easy tapping */
+  a[href^="/contact"], button {
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Adjust grid spacing and borders to be less overwhelming on small screens */
+  .grid {
+    gap: 1.5rem !important;
+  }
+
+  /* Service cards */
+  .bg-white\/5 {
+    padding: 1.5rem !important;
+    border-radius: 1rem !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+  }
+
+  /* Tone down bright borders on mobile to focus on content */
+  .border-primary\/20 {
+    border-color: rgba(255, 191, 0, 0.1) !important;
+  }
+
+}

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
 import NavBar from "@/components/NavBar";
 import "./globals.css";
+import "./mobile.css";
 
 const Preloader = dynamic(() => import("@/components/Preloader"));
 const CursorRingField = dynamic(() => import("@/components/CursorRingField"));
@@ -27,7 +28,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} font-sans`}>
       <body className="bg-background text-white antialiased">
         <Preloader />
-        <div className="fixed inset-0 z-[-1] bg-black pointer-events-auto">
+        <div className="desktop-bg fixed inset-0 z-[-1] bg-black pointer-events-auto">
           <CursorRingField />
         </div>
         <NavBar />
