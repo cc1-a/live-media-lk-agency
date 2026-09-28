@@ -61,7 +61,7 @@ export default function PastProjectsAnimation() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootRef.current,
-          start: "top center", // trigger when the top of the section hits the center of viewport
+          start: "center 75%", // trigger when the center of the section reaches 75% of the viewport height
           toggleActions: "play none none none"
         }
       });
