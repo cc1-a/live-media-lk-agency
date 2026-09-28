@@ -18,7 +18,7 @@ const DPR_CAP = 2
 const MAX_POINTS = 65536
 const TAU = Math.PI * 2
 const MAX_COLORS = 5
-const DEFAULT_COLORS = ["#7189ff", "#3074f9", "#0b0b18"]
+const DEFAULT_COLORS = ["#FFBF00", "#FFD700", "#B8860B"]
 
 const RING_EDGE = 4
 

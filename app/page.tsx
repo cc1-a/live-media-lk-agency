@@ -1,6 +1,7 @@
 import ScrollSequence from '@/components/ScrollSequence'
 import Link from 'next/link'
 import SlotMachine from '@/components/SlotMachine'
+import ExpertiseCards from '@/components/ExpertiseCards'
 import dynamic from 'next/dynamic'
 
 const PastProjectsAnimation = dynamic(() => import('@/components/PastProjectsAnimation'))
@@ -31,45 +32,13 @@ export default function Home() {
           {/* Services Overview (The Routing Hub) */}
           <section>
             <SlotMachine tag="h3" text="OUR EXPERTISE" className="text-3xl font-bold mb-12 text-center uppercase tracking-widest text-primary" color="#FFBF00" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              
-              <div className="bg-white/5 border border-primary/20 p-8 rounded-xl backdrop-blur-sm hover:border-primary/50 transition-colors group">
-                <h4 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">Visual Production</h4>
-                <p className="text-gray-400 mb-8">
-                  Commercial photography, brand videography, and creative shoots tailored for high-end conversions.
-                </p>
-                <Link href="/services/visual-production" className="inline-block border border-primary text-primary px-6 py-3 text-sm uppercase tracking-widest hover:bg-primary hover:text-black transition-colors">
-                  Learn More
-                </Link>
-              </div>
-
-              <div className="bg-white/5 border border-primary/20 p-8 rounded-xl backdrop-blur-sm hover:border-primary/50 transition-colors group">
-                <h4 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">Content Strategy</h4>
-                <p className="text-gray-400 mb-8">
-                  Brand content strategy, social media planning, and visual identity mapping across all touchpoints.
-                </p>
-                <Link href="/services/content-strategy" className="inline-block border border-primary text-primary px-6 py-3 text-sm uppercase tracking-widest hover:bg-primary hover:text-black transition-colors">
-                  Learn More
-                </Link>
-              </div>
-
-              <div className="bg-white/5 border border-primary/20 p-8 rounded-xl backdrop-blur-sm hover:border-primary/50 transition-colors group">
-                <h4 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">Campaign Launch</h4>
-                <p className="text-gray-400 mb-8">
-                  Digital campaign launches, post-launch advertising, and strategic media buying for maximum ROI.
-                </p>
-                <Link href="/services/campaign-launch" className="inline-block border border-primary text-primary px-6 py-3 text-sm uppercase tracking-widest hover:bg-primary hover:text-black transition-colors">
-                  Learn More
-                </Link>
-              </div>
-
-            </div>
+            <ExpertiseCards />
           </section>
 
-          {/* Featured Work (The Proof) */}
-          <PastProjectsAnimation />
-
         </div>
+
+        {/* Featured Work (The Proof) - Moved outside flex container for pinning */}
+        <PastProjectsAnimation />
 
         {/* Social Proof (Full Width) */}
         <section className="w-full relative z-10 py-24">

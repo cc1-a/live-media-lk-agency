@@ -35,7 +35,6 @@ export default function PastProjectsAnimation() {
   const imagesRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const text1Ref = useRef<HTMLParagraphElement | null>(null);
   const text2Ref = useRef<HTMLParagraphElement | null>(null);
-  const descriptionTextRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -43,9 +42,8 @@ export default function PastProjectsAnimation() {
 
       const text1 = SplitText.create(text1Ref.current, { type: "words" });
       const text2 = SplitText.create(text2Ref.current, { type: "words" });
-      const descriptionText = SplitText.create(descriptionTextRef.current, { type: "words,lines" });
 
-      const animatedTextTargets = [text1.words, text2.words, descriptionText.lines];
+      const animatedTextTargets = [text1.words, text2.words];
 
       gsap.set(animatedTextTargets, {
         rotateX: TEXT_ROTATE_X_START,
@@ -56,13 +54,14 @@ export default function PastProjectsAnimation() {
       });
 
       gsap.set(imageElements, { opacity: 0 });
-      gsap.set(descriptionTextRef.current, { opacity: 1 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootRef.current,
-          start: "center 75%", // trigger when the center of the section reaches 75% of the viewport height
-          toggleActions: "play none none none"
+          start: "center center", 
+          end: "+=150%", // animate for a scroll distance of 1.5x the viewport height
+          scrub: 1, 
+          pin: true, // pin the section in place while the animation plays
         }
       });
 
@@ -117,7 +116,6 @@ export default function PastProjectsAnimation() {
       return () => {
         text1.revert();
         text2.revert();
-        descriptionText.revert();
       };
     }, rootRef);
 
@@ -125,59 +123,54 @@ export default function PastProjectsAnimation() {
   }, []);
 
   return (
-    <section
-      ref={rootRef}
-      className="relative z-10 flex min-h-[150vh] w-full items-center justify-center px-[2.5vw] text-white max-[1025px]:px-[5vw] max-md:px-[6vw]"
-    >
-      <div className="flex w-full items-center justify-between max-[1025px]:flex-col max-[1025px]:justify-center max-[1025px]:gap-[33vh] max-md:gap-[70vw]">
-        <p
-          ref={text1Ref}
-          className="opacity-0 max-[1025px]:text-[2.8vw] max-md:text-[5vw] font-bold tracking-[0.2em]"
-        >
-          FEATURED
-        </p>
-
-        <div
-          className="imgs-wrapper relative max-[1025px]:z-50"
-          style={{
-            width: `clamp(8rem, 16vw, 24rem)`,
-            height: `clamp(5rem, 10vw, 15rem)`,
-          }}
-        >
-          {PROJECTS.map((project, index) => (
-            <Link
-              href={`/work/${project.slug}`}
-              key={`${project.src}-${index}`}
-              ref={(element) => {
-                if (element) imagesRef.current[index] = element;
-              }}
-              className="absolute top-0 left-0 size-full overflow-hidden rounded-xl opacity-0 shadow-2xl border border-primary/20 block hover:border-primary/60 transition-colors will-change-transform"
-              style={{ transform: "translateZ(0)" }}
-            >
-              <img
-                src={project.src}
-                className="h-full w-full object-cover"
-                alt={project.alt}
-                loading="lazy"
-              />
-            </Link>
-          ))}
-        </div>
-
-        <p
-          ref={text2Ref}
-          className="opacity-0 max-[1025px]:text-[2.8vw] max-md:text-[4vw] font-bold tracking-[0.2em]"
-        >
-          CAMPAIGNS
-        </p>
-      </div>
-
-      <p
-        ref={descriptionTextRef}
-        className="absolute bottom-[10vh] left-1/2 w-[40vw] -translate-x-1/2 text-center leading-[1.1] text-gray-400 opacity-0 max-[1025px]:w-[68vw] max-[1025px]:text-[2.4vw] max-md:w-[90%] max-md:text-[3.5vw]"
+    <div className="relative w-full">
+      <section
+        ref={rootRef}
+        className="relative z-10 flex min-h-screen w-full items-center justify-center px-[2.5vw] text-white max-[1025px]:px-[5vw] max-md:px-[6vw]"
       >
-        A curated selection of our most successful launches, showcasing uncompromising visual fidelity and strategic execution.
-      </p>
-    </section>
+        <div className="flex w-full items-center justify-between max-[1025px]:flex-col max-[1025px]:justify-center max-[1025px]:gap-[33vh] max-md:gap-[70vw]">
+          <p
+            ref={text1Ref}
+            className="opacity-0 max-[1025px]:text-[2.8vw] max-md:text-[5vw] font-bold tracking-[0.2em]"
+          >
+            FEATURED
+          </p>
+
+          <div
+            className="imgs-wrapper relative max-[1025px]:z-50"
+            style={{
+              width: `clamp(8rem, 16vw, 24rem)`,
+              height: `clamp(5rem, 10vw, 15rem)`,
+            }}
+          >
+            {PROJECTS.map((project, index) => (
+              <Link
+                href={`/work/${project.slug}`}
+                key={`${project.src}-${index}`}
+                ref={(element) => {
+                  if (element) imagesRef.current[index] = element;
+                }}
+                className="absolute top-0 left-0 size-full overflow-hidden rounded-xl opacity-0 shadow-2xl border border-primary/20 block hover:border-primary/60 transition-colors will-change-transform"
+                style={{ transform: "translateZ(0)" }}
+              >
+                <img
+                  src={project.src}
+                  className="h-full w-full object-cover"
+                  alt={project.alt}
+                  loading="lazy"
+                />
+              </Link>
+            ))}
+          </div>
+
+          <p
+            ref={text2Ref}
+            className="opacity-0 max-[1025px]:text-[2.8vw] max-md:text-[4vw] font-bold tracking-[0.2em]"
+          >
+            CAMPAIGNS
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }

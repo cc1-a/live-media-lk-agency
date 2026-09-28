@@ -1,49 +1,78 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
+import PageHeader from '@/components/PageHeader'
+import CallToAction from '@/components/CallToAction'
+import GradientBlob from '@/components/GradientBlob'
+import SlotMachine from '@/components/SlotMachine'
+import { BookOpen, PenTool, TrendingUp, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Content Strategy | Live Media LK',
-  description: 'Data-driven brand content strategy, social media planning, and visual identity mapping across all touchpoints.',
+  description: 'Data-backed social media planning, content calendars, and visual identity mapping.',
 }
+
+const FEATURES = [
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: "Audience Research",
+    description: "Deep dive into demographics, psychographics, and behavior."
+  },
+  {
+    icon: <PenTool className="w-6 h-6" />,
+    title: "Visual Identity",
+    description: "Mapping out a cohesive brand aesthetic across all platforms."
+  },
+  {
+    icon: <BookOpen className="w-6 h-6" />,
+    title: "Content Calendars",
+    description: "Structured planning for consistent, high-quality output."
+  },
+  {
+    icon: <TrendingUp className="w-6 h-6" />,
+    title: "Performance Tracking",
+    description: "Iterative improvements based on engagement analytics."
+  }
+];
 
 export default function ContentStrategyPage() {
   return (
-    <main className="min-h-screen bg-transparent text-white pt-32 pb-24 px-6">
-      <div className="max-w-4xl mx-auto space-y-16">
+    <main className="min-h-screen bg-transparent text-white pt-16">
+      
+      <PageHeader 
+        title="Content Strategy."
+        subtitle="Data-backed social media planning, content calendars, and visual identity mapping."
+      />
+
+      <section className="relative py-24 px-6 overflow-hidden">
+        <GradientBlob className="left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 opacity-20" />
         
-        <header className="space-y-6 border-b border-white/20 pb-12">
-          <Link href="/" className="text-gray-400 hover:text-white uppercase tracking-widest text-xs">&larr; Back to Home</Link>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Content Strategy.</h1>
-          <p className="text-xl text-gray-400">Brand content strategy, social media planning, and visual identity.</p>
-        </header>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <SlotMachine tag="h2" text="OUR APPROACH" className="text-sm font-bold uppercase tracking-widest text-primary mb-4 w-full text-center" color="#FFBF00" />
+            <SlotMachine tag="h3" text="Making every post count." className="text-4xl font-bold w-full text-center" />
+          </div>
 
-        <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Mapping the Visual Journey</h2>
-          <p className="text-gray-300 leading-relaxed text-lg">
-            Before any content is produced, we define the roadmap. We analyze your target audience, identify key cultural touchpoints, and map out a visual journey that aligns perfectly with your brand's core identity.
-          </p>
-        </section>
-
-        <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Social Media Planning</h2>
-          <p className="text-gray-300 leading-relaxed text-lg">
-            Consistency is the engine of growth. We develop comprehensive content calendars, dictating platform-specific strategies that maximize organic reach and build community engagement.
-          </p>
-        </section>
-
-        <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Visual Identity Cohesion</h2>
-          <p className="text-gray-300 leading-relaxed text-lg">
-            Every asset we produce is designed to fit seamlessly into a larger ecosystem. From Instagram grids to web banners, we ensure your brand looks unmistakable and premium across every digital touchpoint.
-          </p>
-        </section>
-
-        <div className="pt-12">
-          <Link href="/contact" className="inline-block border border-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-            Start Strategizing
-          </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+            {FEATURES.map((feature, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-primary/50 transition-colors duration-300 backdrop-blur-sm group">
+                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+                  {feature.icon}
+                </div>
+                <h4 className="text-xl font-bold mb-4">{feature.title}</h4>
+                <p className="text-gray-400">{feature.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Hero Image Section */}
+      <section className="max-w-6xl mx-auto px-6 mb-24 relative">
+        <div className="w-full aspect-[21/9] bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center overflow-hidden relative">
+           <span className="text-white/20 uppercase tracking-widest relative z-20">Strategy Dashboard Visualization</span>
+        </div>
+      </section>
+
+      <CallToAction />
     </main>
   )
 }

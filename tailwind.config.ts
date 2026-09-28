@@ -14,8 +14,13 @@ const config: Config = {
       },
       animation: {
         'neon-flicker': 'neon-flicker 2s infinite alternate',
+        'marquee': 'marquee 25s linear infinite',
       },
       keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
         'neon-flicker': {
           '0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%': {
             textShadow:

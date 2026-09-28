@@ -1,49 +1,78 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
+import PageHeader from '@/components/PageHeader'
+import CallToAction from '@/components/CallToAction'
+import GradientBlob from '@/components/GradientBlob'
+import SlotMachine from '@/components/SlotMachine'
+import { Rocket, Target, PieChart, Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Campaign Launch & PR | Live Media LK',
-  description: 'Digital campaign launches, post-launch advertising, and strategic media buying for maximum ROI.',
+  title: 'Campaign Launch | Live Media LK',
+  description: 'Strategic media buying, paid advertising, and high-impact digital campaign launches.',
 }
+
+const FEATURES = [
+  {
+    icon: <Target className="w-6 h-6" />,
+    title: "Launch Strategy",
+    description: "Multi-channel planning for maximum initial impact."
+  },
+  {
+    icon: <Zap className="w-6 h-6" />,
+    title: "Paid Advertising",
+    description: "Highly targeted ad campaigns across Meta, Google, and TikTok."
+  },
+  {
+    icon: <Rocket className="w-6 h-6" />,
+    title: "Media Buying",
+    description: "Optimized placement to ensure highest return on ad spend."
+  },
+  {
+    icon: <PieChart className="w-6 h-6" />,
+    title: "ROI Optimization",
+    description: "Continuous A/B testing and budget reallocation."
+  }
+];
 
 export default function CampaignLaunchPage() {
   return (
-    <main className="min-h-screen bg-transparent text-white pt-32 pb-24 px-6">
-      <div className="max-w-4xl mx-auto space-y-16">
+    <main className="min-h-screen bg-transparent text-white pt-16">
+      
+      <PageHeader 
+        title="Campaign Launch."
+        subtitle="Strategic media buying, paid advertising, and high-impact digital campaign launches."
+      />
+
+      <section className="relative py-24 px-6 overflow-hidden">
+        <GradientBlob className="left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 opacity-20" />
         
-        <header className="space-y-6 border-b border-white/20 pb-12">
-          <Link href="/" className="text-gray-400 hover:text-white uppercase tracking-widest text-xs">&larr; Back to Home</Link>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Campaign Launch.</h1>
-          <p className="text-xl text-gray-400">Digital campaigns, PR, and data-driven media buying.</p>
-        </header>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <SlotMachine tag="h2" text="THE LAUNCHPAD" className="text-sm font-bold uppercase tracking-widest text-primary mb-4 w-full text-center" color="#FFBF00" />
+            <SlotMachine tag="h3" text="Scaling with precision." className="text-4xl font-bold w-full text-center" />
+          </div>
 
-        <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Digital Campaign Architecture</h2>
-          <p className="text-gray-300 leading-relaxed text-lg">
-            A beautiful video means nothing if nobody sees it. We architect full-scale digital launches, identifying the optimal channels, timings, and audience segments to ensure your campaign makes an explosive impact.
-          </p>
-        </section>
-
-        <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Targeted Media Buying</h2>
-          <p className="text-gray-300 leading-relaxed text-lg">
-            We manage your ad spend with clinical precision. By leveraging A/B testing, pixel tracking, and retargeting funnels, we turn raw visual assets into scalable revenue engines with measurable ROI.
-          </p>
-        </section>
-
-        <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Public Relations & Distribution</h2>
-          <p className="text-gray-300 leading-relaxed text-lg">
-            Beyond paid ads, we orchestrate organic PR momentum. We distribute your narrative across digital publications, influencers, and industry networks to build authentic authority and trust.
-          </p>
-        </section>
-
-        <div className="pt-12">
-          <Link href="/contact" className="inline-block border border-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-            Launch Your Campaign
-          </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+            {FEATURES.map((feature, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-primary/50 transition-colors duration-300 backdrop-blur-sm group">
+                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+                  {feature.icon}
+                </div>
+                <h4 className="text-xl font-bold mb-4">{feature.title}</h4>
+                <p className="text-gray-400">{feature.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Hero Image Section */}
+      <section className="max-w-6xl mx-auto px-6 mb-24 relative">
+        <div className="w-full aspect-[21/9] bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center overflow-hidden relative">
+           <span className="text-white/20 uppercase tracking-widest relative z-20">Campaign Analytics Dashboard</span>
+        </div>
+      </section>
+
+      <CallToAction />
     </main>
   )
 }

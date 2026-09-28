@@ -3,6 +3,9 @@
 import * as React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type FontStyle = React.CSSProperties;
 
@@ -36,9 +39,9 @@ type Props = {
     staggerFrom?: StaggerFrom;
 
     tag?: TextTag;
+    className?: string;
 
     transition?: TransitionValue;
-    className?: string;
 };
 
 const startYPercentMap: Record<StartFrom, number> = {
@@ -66,15 +69,16 @@ const mapEase = (ease: TransitionValue["ease"]): string => {
     return easeMap[ease] ?? ease;
 };
 
-export default function SlotMachine({
+function __OriginkitBase_SlotMachine({
     text = "Rolling Letters",
     font = {},
     color = "#ffffff",
 
-    startFrom = "bottom",
-    staggerFrom = "center",
+    startFrom = "top",
+    staggerFrom = "start",
 
     tag = "h1",
+    className,
 
     transition = {
         type: "tween",
@@ -83,7 +87,6 @@ export default function SlotMachine({
         ease: "easeOut",
         staggerChildren: 0.08,
     },
-    className,
 }: Props) {
     const containerRef = useRef<HTMLElement>(null);
 
@@ -96,18 +99,26 @@ export default function SlotMachine({
 
         gsap.set(chars, {
             clearProps: "transform",
+            yPercent: startYPercentMap[startFrom], // ensure they start hidden
         });
 
-        gsap.from(chars, {
-            yPercent: startYPercentMap[startFrom],
-
-            duration: transition.duration ?? 0.6,
-            delay: transition.delay ?? 0,
-            stagger: {
-                each: transition.staggerChildren ?? 0.08,
-                from: staggerFrom,
+        // Use ScrollTrigger so it waits until it's in view
+        ScrollTrigger.create({
+            trigger: containerRef.current,
+            start: "top 90%", // Start when top of element hits 90% of screen
+            onEnter: () => {
+                gsap.to(chars, {
+                    yPercent: 0,
+                    duration: transition.duration ?? 0.6,
+                    delay: transition.delay ?? 0,
+                    stagger: {
+                        each: transition.staggerChildren ?? 0.08,
+                        from: staggerFrom,
+                    },
+                    ease: mapEase(transition.ease),
+                });
             },
-            ease: mapEase(transition.ease),
+            once: true, // Only play once
         });
     }, [startFrom, staggerFrom, transition]);
 
@@ -127,7 +138,7 @@ export default function SlotMachine({
                 color,
                 ...font,
             },
-            className: className,
+            className
         },
         text.split("").map((char, index) => (
             <span
@@ -141,4 +152,14 @@ export default function SlotMachine({
             </span>
         ))
     );
+}
+
+const __originkitPresetProps = {
+  "text": "ROLLING LETTERS",
+  "startFrom": "bottom",
+  "staggerFrom": "center"
+};
+
+export default function SlotMachine(props: Props) {
+  return <__OriginkitBase_SlotMachine {...(__originkitPresetProps as Record<string, unknown>)} {...props} />;
 }
